@@ -16,41 +16,42 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
       overflow-x: hidden;
     }
 
+    /* УБРАЛИ ОСТРОВОК, СДЕЛАЛИ УГЛЫ ЭКРАНА */
     .top-bar {
       width: 100%;
-      max-width: 900px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #111;
-      padding: 12px 20px;
-      border-radius: 16px;
-      border: 1px solid #222;
-      margin-bottom: 40px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      padding: 20px 30px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
     }
     
     .menu-btn {
       background: transparent;
       border: none;
       color: #fff;
-      font-size: 1.8rem;
+      font-size: 2rem;
       cursor: pointer;
-      padding: 0 10px;
       transition: transform 0.2s;
     }
     .menu-btn:hover { transform: scale(1.1); color: #ff9800; }
 
     .top-stats {
       display: flex;
-      gap: 20px;
-      font-size: 1rem;
+      gap: 25px;
+      font-size: 1.1rem;
       font-weight: 600;
       white-space: nowrap;
+      background: rgba(0,0,0,0.5); /* Легкая подложка, чтобы текст не сливался */
+      padding: 8px 15px;
+      border-radius: 10px;
+      border: 1px solid #222;
     }
     .stat-item span { color: #4caf50; font-weight: 800; }
     .stat-item.garage-stat span { color: #4fc3f7; }
@@ -63,26 +64,42 @@
       flex: 1;
       width: 100%;
       cursor: pointer;
+      padding-top: 80px;
       padding-bottom: 50px;
     }
 
+    /* ====== РЕАЛИСТИЧНЫЙ НОМЕР С ФЛАГОМ ====== */
     .real-plate {
       display: flex;
       align-items: center;
       background: #fff;
       border: 4px solid #000;
-      border-radius: 10px;
-      padding: 5px 10px;
+      border-radius: 8px;
+      padding: 8px 15px 8px 8px;
       box-shadow: 0 0 40px rgba(255,255,255,0.1), inset 0 0 10px rgba(0,0,0,0.1);
       margin-bottom: 30px;
       transition: all 0.2s ease;
       position: relative;
     }
     .real-plate.generating {
-      opacity: 0.4;
-      filter: blur(2px);
+      opacity: 0.3;
+      filter: blur(3px);
     }
 
+    /* Левая часть с флагом */
+    .plate-flag {
+      display: flex;
+      flex-direction: column;
+      width: 25px;
+      height: 45px;
+      margin-right: 15px;
+      border: 1px solid #ccc;
+    }
+    .flag-white { flex: 1; background: #fff; }
+    .flag-blue { flex: 1; background: #0039a6; }
+    .flag-red { flex: 1; background: #d52b1e; }
+
+    /* Основная часть с текстом */
     .plate-main {
       display: flex;
       align-items: center;
@@ -92,33 +109,35 @@
       color: #000;
       letter-spacing: 2px;
       line-height: 1;
-      padding-right: 10px;
+      padding-right: 15px;
     }
     
+    /* Правая часть с регионом */
     .plate-side {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       border-left: 3px solid #000;
-      padding-left: 10px;
+      padding-left: 15px;
       height: 100%;
     }
     
     .plate-region {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       font-weight: bold;
       color: #000;
       line-height: 1;
       margin-bottom: 2px;
     }
     
-    .plate-flags {
-      font-size: 0.6rem;
+    .plate-rus {
+      font-size: 0.65rem;
       color: #000;
       text-align: center;
       line-height: 1;
       letter-spacing: 1px;
+      font-weight: bold;
     }
 
     .rarity-tag {
@@ -185,6 +204,7 @@
       width: 100%;
       max-width: 900px;
       margin-bottom: 50px;
+      padding: 0 20px;
     }
     .garage-card {
       background: #141414; border: 1px solid #222; border-radius: 12px;
@@ -235,10 +255,18 @@
 
   <div class="game-area" id="gameArea">
     <div class="real-plate" id="plateContainer">
+      <!-- Флаг РФ -->
+      <div class="plate-flag">
+        <div class="flag-white"></div>
+        <div class="flag-blue"></div>
+        <div class="flag-red"></div>
+      </div>
+      <!-- Текст номера -->
       <div class="plate-main" id="plateText">---</div>
+      <!-- Регион -->
       <div class="plate-side">
         <div class="plate-region" id="plateRegion">77</div>
-        <div class="plate-flags">RUS</div>
+        <div class="plate-rus">RUS</div>
       </div>
     </div>
 
@@ -307,30 +335,23 @@
       localStorage.setItem("maxGarage", maxGarage);
     }
 
-    // ОБНОВЛЕННАЯ ЛОГИКА С УМЕНЬШЕННЫМИ ШАНСАМИ
     function generatePlate() {
       const roll = Math.random() * 100;
       
-      // Топы (теперь выпадают очень редко)
-      if (roll < 0.05) return { text: "Т228ЗОН", region: "228", rarity: "mythic", points: 150000000 }; // Пасхалка
+      if (roll < 0.05) return { text: "Т228ЗОН", region: "228", rarity: "mythic", points: 150000000 };
       if (roll < 0.2) return { text: "О001ОО", region: "77", rarity: "mythic", points: 50000000 };
       if (roll < 0.7) return { text: "А777АА", region: "99", rarity: "ultra", points: 15000000 };
       if (roll < 2.2) return { text: "Е999КХ", region: "50", rarity: "legendary", points: 5000000 };
 
-      // Обычные/Редкие/Эпики
       const l1 = rand(letters), digits = String(Math.floor(Math.random() * 999) + 1).padStart(3, "0"), l2 = rand(letters), l3 = rand(letters), region = rand(regions);
       const text = `${l1}${digits}${l2}${l3}`;
       
       const d = digits.split("");
-      // Эпики (10% шанс)
       if (d[0] === d[1] || d[1] === d[2] || l1 === l2 || l2 === l3 || l1 === l3) 
         return { text, region, rarity: "epic", points: 800000 };
-      
-      // Редкие (15% шанс)
       if (digits === "123" || digits === "321" || digits === "789" || digits === "987") 
         return { text, region, rarity: "rare", points: 200000 };
       
-      // Обычные (все остальное)
       return { text, region, rarity: "common", points: Math.floor(Math.random() * 50000) + 30000 };
     }
 
@@ -403,15 +424,18 @@
       }
       
       score += currentPrice;
+      
+      // Очищаем текущий номер (исчезает)
       currentPlate = null;
+      plateTextEl.textContent = "---";
+      plateRegionEl.textContent = "77";
+      rarityEl.className = "rarity-tag common";
+      rarityEl.textContent = "НАЖМИ, ЧТОБЫ КРУТИТЬ";
+      priceEl.classList.remove("show");
+      priceEl.textContent = "";
       
       save();
       render();
-      
-      plateTextEl.textContent = "+ " + formatMoney(currentPrice) + " ₽";
-      plateRegionEl.textContent = "";
-      rarityEl.textContent = "ПОЛУЧЕНО";
-      priceEl.classList.remove("show");
     }
 
     function showToast(res) {
