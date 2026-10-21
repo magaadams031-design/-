@@ -18,7 +18,6 @@
       overflow-x: hidden;
     }
 
-    /* Верхняя панель (только меню и баланс) */
     .top-bar {
       width: 100%;
       display: flex;
@@ -55,7 +54,6 @@
     .stat-item span { color: #4caf50; font-weight: 800; }
     .stat-item.garage-stat span { color: #4fc3f7; }
 
-    /* Игровое поле (занимает весь экран) */
     .game-area {
       display: flex;
       flex-direction: column;
@@ -67,51 +65,51 @@
       padding-top: 60px;
     }
 
-    /* ====== НАСТОЯЩИЙ АВТОМОБИЛЬНЫЙ НОМЕР (КАК НА ФОТО) ====== */
+    /* ====== УДЛИНЕННЫЙ НОМЕР ====== */
     .real-plate {
       display: flex;
-      background: #e6e6e6; /* Цвет как на фото (не чисто белый) */
+      background: #e6e6e6;
       border: 3px solid #000;
       border-radius: 8px;
-      padding: 5px 8px;
+      padding: 10px 20px; /* Увеличили внутренние отступы для ширины */
       box-shadow: 0 10px 50px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.1);
       margin-bottom: 40px;
       transition: all 0.2s ease;
       position: relative;
       font-family: 'Arial Narrow', Arial, sans-serif;
+      width: 90%;
+      max-width: 700px; /* Сделали номер широким */
+      justify-content: space-between;
     }
     .real-plate.generating {
       opacity: 0.3;
       filter: blur(3px);
     }
 
-    /* Левая часть (Основной номер) */
     .plate-left {
       display: flex;
       align-items: center;
-      border-right: 3px solid #000;
-      padding-right: 15px;
-      padding-left: 10px;
       position: relative;
+      flex: 1; /* Левая часть занимает все свободное место */
+      padding-left: 20px;
     }
 
-    /* Текст номера */
     .plate-text {
-      font-size: 7rem;
+      font-size: 6.5rem;
       font-weight: 900;
       color: #000;
-      letter-spacing: 3px;
+      letter-spacing: 4px;
       line-height: 1;
-      text-shadow: 1px 1px 0px rgba(0,0,0,0.2); /* Легкая тень для объема */
+      text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
     }
 
-    /* Правая часть (Регион и флаг) */
     .plate-right {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding-left: 15px;
+      border-left: 3px solid #000; /* Разделитель теперь тут */
+      padding-left: 20px;
       padding-right: 10px;
     }
 
@@ -137,7 +135,6 @@
       line-height: 1;
     }
 
-    /* Флаг справа */
     .flag-small {
       display: flex;
       flex-direction: column;
@@ -149,7 +146,6 @@
     .f-blue { flex: 1; background: #0039a6; }
     .f-red { flex: 1; background: #d52b1e; }
 
-    /* Болты (для реализма) */
     .bolt {
       width: 12px;
       height: 12px;
@@ -161,7 +157,7 @@
       box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);
     }
     .bolt-left { left: 5px; }
-    .bolt-right { right: 5px; }
+    .bolt-right { left: 30px; } /* Сдвинули второй болт для баланса */
 
     /* ========================================================= */
 
@@ -241,9 +237,8 @@
     .toast p { font-size: 1.2rem; color: #fff; }
     .toast .toast-price { color: #4caf50; font-size: 1.8rem; font-weight: 900; margin-top: 10px; }
 
-    /* Адаптив для телефонов */
     @media (max-width: 600px) {
-      .plate-text { font-size: 4rem; }
+      .plate-text { font-size: 4rem; letter-spacing: 2px; }
       .plate-region { font-size: 1.5rem; }
       .top-stats { font-size: 0.8rem; gap: 10px; padding: 5px 10px; }
     }
@@ -261,12 +256,11 @@
 
   <div class="game-area" id="gameArea">
     
-    <!-- САМ НОМЕР -->
     <div class="real-plate" id="plateContainer">
       <div class="plate-left">
         <div class="bolt bolt-left"></div>
-        <div class="plate-text" id="plateText">---</div>
         <div class="bolt bolt-right"></div>
+        <div class="plate-text" id="plateText">---</div>
       </div>
       <div class="plate-right">
         <div class="plate-region" id="plateRegion">77</div>
@@ -365,27 +359,38 @@
       return { text, region, rarity: "common", points: Math.floor(Math.random() * 50000) + 30000 };
     }
 
+    // ОБНОВЛЕННАЯ ЛОГИКА КРУТКИ
     function spin() {
       if (isGenerating) return;
       isGenerating = true;
       
-      plateContainer.classList.add("generating");
-      rarityEl.className = "rarity-tag common";
-      rarityEl.textContent = "КРУТИМ...";
-      priceEl.classList.remove("show");
-      priceEl.textContent = "";
-      
-      let ticks = 0;
-      const spinInterval = setInterval(() => {
-        const temp = generatePlate();
-        plateTextEl.textContent = temp.text;
-        plateRegionEl.textContent = temp.region;
-        ticks++;
-        if (ticks > 10) {
-          clearInterval(spinInterval);
-          finishSpin();
-        }
-      }, 50);
+      const roll = Math.random() * 100;
+      // Проверяем, выпадет ли топ (легендарка, ультра, мифик)
+      const isTopTier = roll < 2.2; 
+
+      if (isTopTier) {
+        // Если топ - запускаем анимацию
+        plateContainer.classList.add("generating");
+        rarityEl.className = "rarity-tag common";
+        rarityEl.textContent = "КРУТИМ...";
+        priceEl.classList.remove("show");
+        priceEl.textContent = "";
+        
+        let ticks = 0;
+        const spinInterval = setInterval(() => {
+          const temp = generatePlate();
+          plateTextEl.textContent = temp.text;
+          plateRegionEl.textContent = temp.region;
+          ticks++;
+          if (ticks > 15) { // Чуть дольше крутим для топов
+            clearInterval(spinInterval);
+            finishSpin();
+          }
+        }, 50);
+      } else {
+        // Если обычный/редкий/эпик - пропускаем анимацию
+        finishSpin();
+      }
     }
 
     function finishSpin() {
@@ -461,7 +466,6 @@
       countEl.textContent = garage.length;
       maxGarageEl.textContent = maxGarage;
       
-      // Рендер Сейфа
       safeGrid.innerHTML = "";
       if (safe.length === 0) {
         safeGrid.innerHTML = '<div style="color: #555; grid-column: 1 / -1;">Пока пусто...</div>';
