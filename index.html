@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,84 +7,187 @@
   <title>Тизон228 — Генератор Номеров</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #1e3c72, #2a5298); min-height: 100vh; display: flex; justify-content: center; padding: 20px; color: #fff; }
-    .game { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; max-width: 600px; width: 100%; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
-    h1 { margin-bottom: 5px; } h2 { margin: 25px 0 15px; font-size: 1.2em; }
-    .subtitle { font-size: 0.9em; opacity: 0.7; margin-bottom: 15px; }
-    .score { font-size: 1.1em; margin-bottom: 20px; opacity: 0.9; }
+    /* СДЕЛАЛИ ЧЕРНЫЙ ФОН */
+    body { 
+      font-family: 'Segoe UI', Arial, sans-serif; 
+      background: #121212; 
+      color: #fff; 
+      min-height: 100vh; 
+      display: flex; 
+      justify-content: center; 
+      padding: 20px; 
+    }
+    .game { 
+      background: #1e1e1e; 
+      border-radius: 20px; 
+      padding: 30px; 
+      max-width: 600px; 
+      width: 100%; 
+      text-align: center; 
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+      border: 1px solid #333;
+    }
+    h1 { margin-bottom: 5px; color: #fff; } 
+    h2 { margin: 25px 0 15px; font-size: 1.2em; color: #aaa; }
+    .subtitle { font-size: 0.9em; color: #888; margin-bottom: 15px; }
+    .score { font-size: 1.1em; margin-bottom: 20px; color: #4caf50; font-weight: bold; }
+    
     .plate-box { margin: 20px 0; }
-    .plate { display: inline-block; background: #fff; color: #000; font-family: 'Courier New', monospace; font-weight: bold; font-size: 2em; padding: 15px 30px; border: 6px solid #000; border-radius: 10px; letter-spacing: 2px; min-width: 280px; transition: transform 0.2s; }
+    .plate { 
+      display: inline-block; background: #fff; color: #000; 
+      font-family: 'Courier New', monospace; font-weight: bold; font-size: 2em; 
+      padding: 15px 30px; border: 6px solid #000; border-radius: 10px; 
+      letter-spacing: 2px; min-width: 280px; transition: transform 0.2s; 
+    }
     .plate.pop { animation: pop 0.3s ease; }
     @keyframes pop { 0% { transform: scale(0.8); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    
     .rarity { margin-top: 10px; font-size: 1.1em; min-height: 1.5em; font-weight: bold; }
-    .rarity.common { color: #ddd; } .rarity.rare { color: #4fc3f7; } .rarity.epic { color: #ba68c8; } .rarity.legendary { color: #ffd54f; text-shadow: 0 0 10px #ffd54f; }
+    .price { font-size: 1.3em; color: #ffd54f; margin-top: 5px; font-weight: bold; }
+    
+    .rarity.common { color: #ccc; } .rarity.rare { color: #4fc3f7; } .rarity.epic { color: #ba68c8; } .rarity.legendary { color: #ffd54f; text-shadow: 0 0 10px #ffd54f; }
+    
     .buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
-    button { padding: 12px 24px; font-size: 1em; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: transform 0.1s, opacity 0.2s; }
-    button:hover:not(:disabled) { transform: translateY(-2px); } button:active:not(:disabled) { transform: translateY(0); } button:disabled { opacity: 0.4; cursor: not-allowed; }
-    #genBtn { background: #4caf50; color: #fff; } #saveBtn { background: #ff9800; color: #fff; } .clear { background: #f44336; color: #fff; margin-top: 15px; font-size: 0.9em; }
-    .garage { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 50px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 10px; }
-    .garage-item { background: #fff; color: #000; font-family: 'Courier New', monospace; font-weight: bold; padding: 6px 12px; border-radius: 6px; font-size: 0.85em; border-left: 5px solid #999; }
-    .garage-item.rare { border-left-color: #4fc3f7; } .garage-item.epic { border-left-color: #ba68c8; } .garage-item.legendary { border-left-color: #ffd54f; }
+    button { 
+      padding: 12px 24px; font-size: 1em; border: none; border-radius: 10px; 
+      cursor: pointer; font-weight: bold; transition: transform 0.1s, opacity 0.2s; 
+    }
+    button:hover:not(:disabled) { transform: translateY(-2px); } 
+    button:active:not(:disabled) { transform: translateY(0); } 
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    
+    #genBtn { background: #4caf50; color: #fff; } 
+    #saveBtn { background: #ff9800; color: #fff; } 
+    .clear { background: #f44336; color: #fff; margin-top: 15px; font-size: 0.9em; }
+    
+    .garage { 
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; 
+      min-height: 50px; padding: 10px; background: #000; border-radius: 10px; border: 1px solid #333;
+    }
+    .garage-item { 
+      background: #fff; color: #000; font-family: 'Courier New', monospace; 
+      font-weight: bold; padding: 6px 12px; border-radius: 6px; font-size: 0.85em; 
+      border-left: 5px solid #999; text-align: center;
+    }
+    .garage-item .item-price { display: block; font-size: 0.8em; color: #4caf50; }
+    
+    .garage-item.rare { border-left-color: #4fc3f7; } 
+    .garage-item.epic { border-left-color: #ba68c8; } 
+    .garage-item.legendary { border-left-color: #ffd54f; }
   </style>
 </head>
 <body>
   <div class="game">
     <h1>🚗 Тизон228</h1>
     <p class="subtitle">Генератор автомобильных номеров</p>
-    <p class="score">Очки: <span id="score">0</span> | В гараже: <span id="count">0</span></p>
+    <p class="score">Общая стоимость гаража: <span id="score">0</span> ₽ | В гараже: <span id="count">0</span></p>
+    
     <div class="plate-box">
-      <div id="plate" class="plate">Нажми «Сгенерировать»</div>
+      <div id="plate" class="plate">Нажми кнопку</div>
       <div id="rarity" class="rarity"></div>
+      <div id="price" class="price"></div>
     </div>
+
     <div class="buttons">
       <button id="genBtn">🎲 Сгенерировать</button>
-      <button id="saveBtn" disabled>💾 В гараж</button>
+      <button id="saveBtn" disabled>💾 Продать в гараж</button>
     </div>
+
     <h2>🏠 Мой гараж</h2>
     <div id="garage" class="garage"></div>
     <button id="clearBtn" class="clear">🗑️ Очистить гараж</button>
   </div>
+
   <script>
     const letters = ["А","В","Е","К","М","Н","О","Р","С","Т","У","Х"];
     const regions = ["77","50","99","78","47","23","61","16","02","66","52","24"];
-    let currentPlate = null, currentRarity = "common", score = 0, garage = [];
+    let currentPlate = null, currentRarity = "common", currentPrice = 0, score = 0, garage = [];
+    
     if (localStorage.getItem("garage")) garage = JSON.parse(localStorage.getItem("garage"));
     if (localStorage.getItem("score")) score = parseInt(localStorage.getItem("score"));
-    const plateEl = document.getElementById("plate"), rarityEl = document.getElementById("rarity"), scoreEl = document.getElementById("score"), countEl = document.getElementById("count"), garageEl = document.getElementById("garage"), genBtn = document.getElementById("genBtn"), saveBtn = document.getElementById("saveBtn"), clearBtn = document.getElementById("clearBtn");
+    
+    const plateEl = document.getElementById("plate"), rarityEl = document.getElementById("rarity"), priceEl = document.getElementById("price"), scoreEl = document.getElementById("score"), countEl = document.getElementById("count"), garageEl = document.getElementById("garage"), genBtn = document.getElementById("genBtn"), saveBtn = document.getElementById("saveBtn"), clearBtn = document.getElementById("clearBtn");
+    
     function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    
     function generatePlate() {
-      if (Math.random() < 0.01) return { text: "Т228ЗОН 228", digits: "228", l1: "Т", l2: "З", l3: "Н", easter: true };
+      if (Math.random() < 0.01) {
+        return { text: "Т228ЗОН 228", digits: "228", l1: "Т", l2: "З", l3: "Н", easter: true };
+      }
       const l1 = rand(letters), digits = String(Math.floor(Math.random() * 999) + 1).padStart(3, "0"), l2 = rand(letters), l3 = rand(letters), region = rand(regions);
       return { text: `${l1}${digits}${l2}${l3} ${region}`, digits, l1, l2, l3 };
     }
+    
     function getRarity(p) {
-      if (p.easter) return { level: "legendary", name: "🥚 ТИЗОН228! СЕКРЕТНЫЙ НОМЕР", points: 228 };
+      if (p.easter) return { level: "legendary", name: "🥚 ТИЗОН228! СЕКРЕТНЫЙ НОМЕР", points: 50000 };
       const { digits, l1, l2, l3 } = p, d = digits.split("");
-      if (digits === "777" || digits === "001" || digits === "100" || (l1 === l2 && l2 === l3)) return { level: "legendary", name: "🌟 ЛЕГЕНДАРНЫЙ", points: 100 };
-      if (d[0] === d[1] || d[1] === d[2] || l1 === l2 || l2 === l3 || l1 === l3) return { level: "epic", name: "💜 ЭПИЧЕСКИЙ", points: 50 };
-      if (digits === "123" || digits === "321" || digits === "789" || digits === "987") return { level: "rare", name: "💙 РЕДКИЙ", points: 25 };
-      return { level: "common", name: "⚪ ОБЫЧНЫЙ", points: 10 };
+      
+      // Чем реже - тем больше цена
+      if (digits === "777" || digits === "001" || digits === "100" || (l1 === l2 && l2 === l3)) 
+        return { level: "legendary", name: "🌟 ЛЕГЕНДАРНЫЙ", points: 15000 };
+      if (d[0] === d[1] || d[1] === d[2] || l1 === l2 || l2 === l3 || l1 === l3) 
+        return { level: "epic", name: "💜 ЭПИЧЕСКИЙ", points: 5000 };
+      if (digits === "123" || digits === "321" || digits === "789" || digits === "987") 
+        return { level: "rare", name: "💙 РЕДКИЙ", points: 2000 };
+      
+      // Обычные номера тоже стоят денег (от 500 до 1500)
+      const basePrice = Math.floor(Math.random() * 1000) + 500;
+      return { level: "common", name: "⚪ ОБЫЧНЫЙ", points: basePrice };
     }
+    
+    function formatMoney(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+    
     function render() {
-      scoreEl.textContent = score; countEl.textContent = garage.length; garageEl.innerHTML = "";
-      garage.forEach(item => { const div = document.createElement("div"); div.className = "garage-item " + item.rarity; div.textContent = item.text; garageEl.appendChild(div); });
+      scoreEl.textContent = formatMoney(score); 
+      countEl.textContent = garage.length; 
+      garageEl.innerHTML = "";
+      
+      garage.forEach(item => { 
+        const div = document.createElement("div"); 
+        div.className = "garage-item " + item.rarity; 
+        div.innerHTML = `${item.text}<span class="item-price">${formatMoney(item.price)} ₽</span>`; 
+        garageEl.appendChild(div); 
+      });
     }
+    
     genBtn.addEventListener("click", () => {
-      const p = generatePlate(), r = getRarity(p); currentPlate = p.text; currentRarity = r.level; plateEl.textContent = p.text;
+      const p = generatePlate(), r = getRarity(p); 
+      currentPlate = p.text; currentRarity = r.level; currentPrice = r.points;
+      
+      plateEl.textContent = p.text;
       plateEl.classList.remove("pop"); void plateEl.offsetWidth; plateEl.classList.add("pop");
+      
       rarityEl.textContent = r.name; rarityEl.className = "rarity " + r.level;
-      saveBtn.disabled = false; saveBtn.textContent = `💾 В гараж (+${r.points})`;
+      priceEl.textContent = `Цена: ${formatMoney(r.points)} ₽`;
+      
+      saveBtn.disabled = false; 
+      saveBtn.textContent = `💾 Продать (+${formatMoney(r.points)} ₽)`;
     });
+    
     saveBtn.addEventListener("click", () => {
       if (!currentPlate) return;
-      const r = getRarity({ text: currentPlate, digits: currentPlate.slice(1,4), l1: currentPlate[0], l2: currentPlate[4], l3: currentPlate[5] });
-      garage.push({ text: currentPlate, rarity: currentRarity }); score += r.points;
-      localStorage.setItem("garage", JSON.stringify(garage)); localStorage.setItem("score", score);
-      saveBtn.disabled = true; saveBtn.textContent = "💾 В гараж"; render();
+      garage.push({ text: currentPlate, rarity: currentRarity, price: currentPrice }); 
+      score += currentPrice;
+      
+      localStorage.setItem("garage", JSON.stringify(garage)); 
+      localStorage.setItem("score", score);
+      
+      saveBtn.disabled = true; 
+      saveBtn.textContent = "💾 Продать в гараж"; 
+      render();
     });
+    
     clearBtn.addEventListener("click", () => {
-      if (confirm("Очистить гараж и очки?")) { garage = []; score = 0; localStorage.removeItem("garage"); localStorage.removeItem("score"); render(); }
+      if (confirm("Очистить гараж и очки?")) { 
+        garage = []; score = 0; 
+        localStorage.removeItem("garage"); 
+        localStorage.removeItem("score"); 
+        render(); 
+      }
     });
+    
     render();
   </script>
 </body>
