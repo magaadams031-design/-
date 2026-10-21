@@ -15,11 +15,10 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       overflow-x: hidden;
     }
 
-    /* УБРАЛИ ОСТРОВОК, СДЕЛАЛИ УГЛЫ ЭКРАНА */
+    /* Верхняя панель (только меню и баланс) */
     .top-bar {
       width: 100%;
       display: flex;
@@ -48,7 +47,7 @@
       font-size: 1.1rem;
       font-weight: 600;
       white-space: nowrap;
-      background: rgba(0,0,0,0.5); /* Легкая подложка, чтобы текст не сливался */
+      background: rgba(0,0,0,0.6);
       padding: 8px 15px;
       border-radius: 10px;
       border: 1px solid #222;
@@ -56,6 +55,7 @@
     .stat-item span { color: #4caf50; font-weight: 800; }
     .stat-item.garage-stat span { color: #4fc3f7; }
 
+    /* Игровое поле (занимает весь экран) */
     .game-area {
       display: flex;
       flex-direction: column;
@@ -64,81 +64,106 @@
       flex: 1;
       width: 100%;
       cursor: pointer;
-      padding-top: 80px;
-      padding-bottom: 50px;
+      padding-top: 60px;
     }
 
-    /* ====== РЕАЛИСТИЧНЫЙ НОМЕР С ФЛАГОМ ====== */
+    /* ====== НАСТОЯЩИЙ АВТОМОБИЛЬНЫЙ НОМЕР (КАК НА ФОТО) ====== */
     .real-plate {
       display: flex;
-      align-items: center;
-      background: #fff;
-      border: 4px solid #000;
+      background: #e6e6e6; /* Цвет как на фото (не чисто белый) */
+      border: 3px solid #000;
       border-radius: 8px;
-      padding: 8px 15px 8px 8px;
-      box-shadow: 0 0 40px rgba(255,255,255,0.1), inset 0 0 10px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
+      padding: 5px 8px;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
       transition: all 0.2s ease;
       position: relative;
+      font-family: 'Arial Narrow', Arial, sans-serif;
     }
     .real-plate.generating {
       opacity: 0.3;
       filter: blur(3px);
     }
 
-    /* Левая часть с флагом */
-    .plate-flag {
-      display: flex;
-      flex-direction: column;
-      width: 25px;
-      height: 45px;
-      margin-right: 15px;
-      border: 1px solid #ccc;
-    }
-    .flag-white { flex: 1; background: #fff; }
-    .flag-blue { flex: 1; background: #0039a6; }
-    .flag-red { flex: 1; background: #d52b1e; }
-
-    /* Основная часть с текстом */
-    .plate-main {
+    /* Левая часть (Основной номер) */
+    .plate-left {
       display: flex;
       align-items: center;
-      font-family: 'Arial Narrow', 'Arial', sans-serif;
-      font-weight: bold;
-      font-size: 5rem;
-      color: #000;
-      letter-spacing: 2px;
-      line-height: 1;
+      border-right: 3px solid #000;
       padding-right: 15px;
+      padding-left: 10px;
+      position: relative;
     }
-    
-    /* Правая часть с регионом */
-    .plate-side {
+
+    /* Текст номера */
+    .plate-text {
+      font-size: 7rem;
+      font-weight: 900;
+      color: #000;
+      letter-spacing: 3px;
+      line-height: 1;
+      text-shadow: 1px 1px 0px rgba(0,0,0,0.2); /* Легкая тень для объема */
+    }
+
+    /* Правая часть (Регион и флаг) */
+    .plate-right {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-left: 3px solid #000;
       padding-left: 15px;
-      height: 100%;
+      padding-right: 10px;
     }
-    
+
     .plate-region {
-      font-size: 1.4rem;
+      font-size: 2rem;
       font-weight: bold;
       color: #000;
       line-height: 1;
-      margin-bottom: 2px;
-    }
-    
-    .plate-rus {
-      font-size: 0.65rem;
-      color: #000;
-      text-align: center;
-      line-height: 1;
+      margin-bottom: 5px;
       letter-spacing: 1px;
-      font-weight: bold;
     }
+
+    .plate-rus-box {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .plate-rus {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #000;
+      line-height: 1;
+    }
+
+    /* Флаг справа */
+    .flag-small {
+      display: flex;
+      flex-direction: column;
+      width: 20px;
+      height: 14px;
+      border: 1px solid #000;
+    }
+    .f-white { flex: 1; background: #fff; }
+    .f-blue { flex: 1; background: #0039a6; }
+    .f-red { flex: 1; background: #d52b1e; }
+
+    /* Болты (для реализма) */
+    .bolt {
+      width: 12px;
+      height: 12px;
+      background: #333;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .bolt-left { left: 5px; }
+    .bolt-right { right: 5px; }
+
+    /* ========================================================= */
 
     .rarity-tag {
       font-size: 1.2rem;
@@ -169,6 +194,7 @@
     }
     .price-display.show { opacity: 1; }
 
+    /* Модальное окно */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
@@ -197,33 +223,6 @@
     .upgrade-btn:hover { background: #5cb860; }
     .upgrade-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
 
-    .garage-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 15px;
-      width: 100%;
-      max-width: 900px;
-      margin-bottom: 50px;
-      padding: 0 20px;
-    }
-    .garage-card {
-      background: #141414; border: 1px solid #222; border-radius: 12px;
-      padding: 15px; text-align: center; position: relative; overflow: hidden;
-    }
-    .garage-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
-    .garage-card.legendary::before { background: #ffd54f; }
-    .garage-card.mythic::before { background: #e91e63; }
-    .garage-card.ultra::before { background: #00bcd4; }
-    .garage-card.epic::before { background: #ba68c8; }
-    .garage-card.rare::before { background: #4fc3f7; }
-    .garage-card.common::before { background: #555; }
-
-    .garage-card .card-plate {
-      font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 800;
-      background: #fff; color: #000; padding: 4px; border-radius: 4px; margin-bottom: 8px; display: inline-block;
-    }
-    .garage-card .card-price { color: #4caf50; font-weight: 700; font-size: 0.9rem; }
-    
     .safe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 15px; }
     .safe-card {
       background: #1e1e1e; border: 1px solid #ffd54f; border-radius: 10px; padding: 10px;
@@ -241,6 +240,13 @@
     .toast h3 { color: #ffd54f; font-size: 1.5rem; margin-bottom: 5px; }
     .toast p { font-size: 1.2rem; color: #fff; }
     .toast .toast-price { color: #4caf50; font-size: 1.8rem; font-weight: 900; margin-top: 10px; }
+
+    /* Адаптив для телефонов */
+    @media (max-width: 600px) {
+      .plate-text { font-size: 4rem; }
+      .plate-region { font-size: 1.5rem; }
+      .top-stats { font-size: 0.8rem; gap: 10px; padding: 5px 10px; }
+    }
   </style>
 </head>
 <body>
@@ -254,19 +260,24 @@
   </div>
 
   <div class="game-area" id="gameArea">
+    
+    <!-- САМ НОМЕР -->
     <div class="real-plate" id="plateContainer">
-      <!-- Флаг РФ -->
-      <div class="plate-flag">
-        <div class="flag-white"></div>
-        <div class="flag-blue"></div>
-        <div class="flag-red"></div>
+      <div class="plate-left">
+        <div class="bolt bolt-left"></div>
+        <div class="plate-text" id="plateText">---</div>
+        <div class="bolt bolt-right"></div>
       </div>
-      <!-- Текст номера -->
-      <div class="plate-main" id="plateText">---</div>
-      <!-- Регион -->
-      <div class="plate-side">
+      <div class="plate-right">
         <div class="plate-region" id="plateRegion">77</div>
-        <div class="plate-rus">RUS</div>
+        <div class="plate-rus-box">
+          <div class="plate-rus">RUS</div>
+          <div class="flag-small">
+            <div class="f-white"></div>
+            <div class="f-blue"></div>
+            <div class="f-red"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -274,8 +285,7 @@
     <div id="price" class="price-display">0 ₽</div>
   </div>
 
-  <div id="garage" class="garage-grid"></div>
-
+  <!-- Модальное окно (Меню) -->
   <div class="modal-overlay" id="modal">
     <div class="modal-content">
       <span class="close-btn" id="closeModal">✖</span>
@@ -319,7 +329,7 @@
     const scoreEl = document.getElementById("score"), countEl = document.getElementById("count"), maxGarageEl = document.getElementById("maxGarage");
     const plateContainer = document.getElementById("plateContainer"), plateTextEl = document.getElementById("plateText"), plateRegionEl = document.getElementById("plateRegion");
     const rarityEl = document.getElementById("rarity"), priceEl = document.getElementById("price");
-    const gameArea = document.getElementById("gameArea"), garageEl = document.getElementById("garage");
+    const gameArea = document.getElementById("gameArea");
     const modal = document.getElementById("modal"), menuBtn = document.getElementById("menuBtn"), closeModal = document.getElementById("closeModal");
     const upgradeBtn = document.getElementById("upgradeBtn"), clearBtn = document.getElementById("clearBtn");
     const safeGrid = document.getElementById("safeGrid");
@@ -425,7 +435,6 @@
       
       score += currentPrice;
       
-      // Очищаем текущий номер (исчезает)
       currentPlate = null;
       plateTextEl.textContent = "---";
       plateRegionEl.textContent = "77";
@@ -452,14 +461,7 @@
       countEl.textContent = garage.length;
       maxGarageEl.textContent = maxGarage;
       
-      garageEl.innerHTML = "";
-      garage.slice().reverse().forEach(item => { 
-        const div = document.createElement("div"); 
-        div.className = "garage-card " + item.rarity; 
-        div.innerHTML = `<div class="card-plate">${item.text}</div><div class="card-price">${formatMoney(item.price)} ₽</div>`; 
-        garageEl.appendChild(div); 
-      });
-      
+      // Рендер Сейфа
       safeGrid.innerHTML = "";
       if (safe.length === 0) {
         safeGrid.innerHTML = '<div style="color: #555; grid-column: 1 / -1;">Пока пусто...</div>';
