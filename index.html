@@ -20,7 +20,6 @@
       overflow-x: hidden;
     }
 
-    /* Верхняя панель (Баланс, Гараж, Меню) в одну строчку */
     .top-bar {
       width: 100%;
       max-width: 900px;
@@ -28,21 +27,13 @@
       justify-content: space-between;
       align-items: center;
       background: #111;
-      padding: 15px 25px;
+      padding: 12px 20px;
       border-radius: 16px;
       border: 1px solid #222;
       margin-bottom: 40px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     }
-    .top-stats {
-      display: flex;
-      gap: 30px;
-      font-size: 1.1rem;
-    }
-    .stat-item span { color: #4caf50; font-weight: 800; }
-    .stat-item.garage-stat span { color: #4fc3f7; }
     
-    /* Кнопка меню (3 полоски) */
     .menu-btn {
       background: transparent;
       border: none;
@@ -54,7 +45,16 @@
     }
     .menu-btn:hover { transform: scale(1.1); color: #ff9800; }
 
-    /* Игровое поле */
+    .top-stats {
+      display: flex;
+      gap: 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .stat-item span { color: #4caf50; font-weight: 800; }
+    .stat-item.garage-stat span { color: #4fc3f7; }
+
     .game-area {
       display: flex;
       flex-direction: column;
@@ -62,29 +62,67 @@
       justify-content: center;
       flex: 1;
       width: 100%;
-      cursor: pointer; /* Клик в любом месте для скипа */
+      cursor: pointer;
+      padding-bottom: 50px;
     }
 
-    .plate {
+    .real-plate {
+      display: flex;
+      align-items: center;
       background: #fff;
-      color: #000;
-      font-family: 'Courier New', monospace;
-      font-weight: 900;
-      font-size: 4rem;
-      padding: 20px 60px;
-      border-radius: 16px;
-      border: 5px solid #333;
-      letter-spacing: 5px;
-      box-shadow: 0 0 50px rgba(255,255,255,0.1);
-      transition: all 0.2s ease;
+      border: 4px solid #000;
+      border-radius: 10px;
+      padding: 5px 10px;
+      box-shadow: 0 0 40px rgba(255,255,255,0.1), inset 0 0 10px rgba(0,0,0,0.1);
       margin-bottom: 30px;
-      text-align: center;
-      min-width: 450px;
+      transition: all 0.2s ease;
+      position: relative;
     }
-    .plate.generating { opacity: 0.3; filter: blur(5px); }
+    .real-plate.generating {
+      opacity: 0.4;
+      filter: blur(2px);
+    }
+
+    .plate-main {
+      display: flex;
+      align-items: center;
+      font-family: 'Arial Narrow', 'Arial', sans-serif;
+      font-weight: bold;
+      font-size: 5rem;
+      color: #000;
+      letter-spacing: 2px;
+      line-height: 1;
+      padding-right: 10px;
+    }
     
+    .plate-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-left: 3px solid #000;
+      padding-left: 10px;
+      height: 100%;
+    }
+    
+    .plate-region {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #000;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    
+    .plate-flags {
+      font-size: 0.6rem;
+      color: #000;
+      text-align: center;
+      line-height: 1;
+      letter-spacing: 1px;
+    }
+
     .rarity-tag {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 800;
       padding: 10px 30px;
       border-radius: 30px;
@@ -95,7 +133,6 @@
       transition: all 0.3s;
     }
     
-    /* Цвета редкостей */
     .rarity-tag.legendary { background: linear-gradient(90deg, #ffd54f, #ff9800); color: #000; box-shadow: 0 0 30px #ffd54f; }
     .rarity-tag.mythic { background: linear-gradient(90deg, #e91e63, #9c27b0); color: #fff; box-shadow: 0 0 30px #e91e63; }
     .rarity-tag.ultra { background: linear-gradient(90deg, #00bcd4, #3f51b5); color: #fff; box-shadow: 0 0 30px #00bcd4; }
@@ -113,7 +150,6 @@
     }
     .price-display.show { opacity: 1; }
 
-    /* Окно прокачки и сейфа (модальное) */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
@@ -131,7 +167,6 @@
     .close-btn { float: right; cursor: pointer; color: #f44336; font-size: 1.5rem; font-weight: bold; }
     .close-btn:hover { color: #ff5252; }
 
-    /* Секция улучшений */
     .upgrade-item {
       display: flex; justify-content: space-between; align-items: center;
       background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 15px;
@@ -143,7 +178,6 @@
     .upgrade-btn:hover { background: #5cb860; }
     .upgrade-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
 
-    /* Сетка гаража */
     .garage-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -165,20 +199,18 @@
     .garage-card.common::before { background: #555; }
 
     .garage-card .card-plate {
-      font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 800;
-      background: #fff; color: #000; padding: 5px; border-radius: 4px; margin-bottom: 8px; display: inline-block;
+      font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 800;
+      background: #fff; color: #000; padding: 4px; border-radius: 4px; margin-bottom: 8px; display: inline-block;
     }
     .garage-card .card-price { color: #4caf50; font-weight: 700; font-size: 0.9rem; }
     
-    /* Сейф (Крутые номера) */
     .safe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 15px; }
     .safe-card {
       background: #1e1e1e; border: 1px solid #ffd54f; border-radius: 10px; padding: 10px;
       display: flex; flex-direction: column; align-items: center;
     }
-    .safe-card .card-plate { background: #000; color: #ffd54f; padding: 5px 10px; border-radius: 5px; font-family: monospace; font-weight: bold; font-size: 1.2rem; }
+    .safe-card .card-plate { background: #000; color: #ffd54f; padding: 5px 10px; border-radius: 5px; font-family: monospace; font-weight: bold; font-size: 1.1rem; }
 
-    /* Уведомление при выпадении топ-номера */
     .toast {
       position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
       background: #000; border: 2px solid #ffd54f; padding: 20px 40px; border-radius: 16px;
@@ -189,49 +221,48 @@
     .toast h3 { color: #ffd54f; font-size: 1.5rem; margin-bottom: 5px; }
     .toast p { font-size: 1.2rem; color: #fff; }
     .toast .toast-price { color: #4caf50; font-size: 1.8rem; font-weight: 900; margin-top: 10px; }
-
   </style>
 </head>
 <body>
 
-  <!-- Верхняя панель -->
   <div class="top-bar">
+    <button class="menu-btn" id="menuBtn">☰</button>
     <div class="top-stats">
       <div class="stat-item">Баланс: <span id="score">0</span> ₽</div>
       <div class="stat-item garage-stat">В гараже: <span id="count">0</span>/<span id="maxGarage">10</span></div>
     </div>
-    <button class="menu-btn" id="menuBtn">☰</button>
   </div>
 
-  <!-- Игровая зона (клик для скипа) -->
   <div class="game-area" id="gameArea">
-    <div id="plate" class="plate">---</div>
+    <div class="real-plate" id="plateContainer">
+      <div class="plate-main" id="plateText">---</div>
+      <div class="plate-side">
+        <div class="plate-region" id="plateRegion">77</div>
+        <div class="plate-flags">RUS</div>
+      </div>
+    </div>
+
     <div id="rarity" class="rarity-tag common">НАЖМИ, ЧТОБЫ КРУТИТЬ</div>
     <div id="price" class="price-display">0 ₽</div>
   </div>
 
-  <!-- Сетка гаража -->
   <div id="garage" class="garage-grid"></div>
 
-  <!-- Модальное окно (Меню) -->
   <div class="modal-overlay" id="modal">
     <div class="modal-content">
       <span class="close-btn" id="closeModal">✖</span>
       <h2>Меню</h2>
       
-      <!-- Прокачка -->
       <h3 style="margin-bottom: 15px; color: #aaa;">Улучшения</h3>
       <div class="upgrade-item">
         <div>
           <div style="font-weight: bold;">Расширение гаража</div>
-          <div style="font-size: 0.8rem; color: #888;">+5 слотов для номеров</div>
+          <div style="font-size: 0.8rem; color: #888;">+5 слотов</div>
         </div>
         <button class="upgrade-btn" id="upgradeBtn">500 000 ₽</button>
       </div>
 
-      <!-- Сейф -->
       <h3 style="margin: 25px 0 15px; color: #aaa;">🔒 Сейф (Топ-номера)</h3>
-      <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">Сюда попадают Легендарные, Ультра и Мифические номера. Их нельзя случайно удалить.</p>
       <div class="safe-grid" id="safeGrid">
         <div style="color: #555;">Пока пусто...</div>
       </div>
@@ -240,7 +271,6 @@
     </div>
   </div>
 
-  <!-- Всплывающее окно при топ-номере -->
   <div class="toast" id="toast">
     <h3 id="toastTitle">ЛЕГЕНДА!</h3>
     <p id="toastText">Вы выбили номер!</p>
@@ -248,7 +278,6 @@
   </div>
 
   <script>
-    // Данные
     const letters = ["А","В","Е","К","М","Н","О","Р","С","Т","У","Х"];
     const regions = ["77","50","99","78","47","23","61","16","02","66","52","24"];
     
@@ -259,9 +288,9 @@
     let currentPlate = null, currentRarity = "common", currentPrice = 0;
     let isGenerating = false;
 
-    // DOM
     const scoreEl = document.getElementById("score"), countEl = document.getElementById("count"), maxGarageEl = document.getElementById("maxGarage");
-    const plateEl = document.getElementById("plate"), rarityEl = document.getElementById("rarity"), priceEl = document.getElementById("price");
+    const plateContainer = document.getElementById("plateContainer"), plateTextEl = document.getElementById("plateText"), plateRegionEl = document.getElementById("plateRegion");
+    const rarityEl = document.getElementById("rarity"), priceEl = document.getElementById("price");
     const gameArea = document.getElementById("gameArea"), garageEl = document.getElementById("garage");
     const modal = document.getElementById("modal"), menuBtn = document.getElementById("menuBtn"), closeModal = document.getElementById("closeModal");
     const upgradeBtn = document.getElementById("upgradeBtn"), clearBtn = document.getElementById("clearBtn");
@@ -271,7 +300,6 @@
     function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
     function formatMoney(num) { return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
 
-    // Сохранение
     function save() {
       localStorage.setItem("score", score);
       localStorage.setItem("garage", JSON.stringify(garage));
@@ -279,38 +307,38 @@
       localStorage.setItem("maxGarage", maxGarage);
     }
 
-    // Логика генерации
+    // ОБНОВЛЕННАЯ ЛОГИКА С УМЕНЬШЕННЫМИ ШАНСАМИ
     function generatePlate() {
       const roll = Math.random() * 100;
       
-      // Уменьшенные шансы на топы (1% на мифик, 3% на ультра, 6% на легу)
-      if (roll < 1) return { text: "МИФ 001", rarity: "mythic", points: 50000000 };
-      if (roll < 4) return { text: "УЛЬТРА 777", rarity: "ultra", points: 15000000 };
-      if (roll < 10) return { text: "ЛЕГА 999", rarity: "legendary", points: 5000000 };
-      
-      // Пасхалка
-      if (roll > 99.8) return { text: "Т228ЗОН", rarity: "mythic", points: 100000000 };
+      // Топы (теперь выпадают очень редко)
+      if (roll < 0.05) return { text: "Т228ЗОН", region: "228", rarity: "mythic", points: 150000000 }; // Пасхалка
+      if (roll < 0.2) return { text: "О001ОО", region: "77", rarity: "mythic", points: 50000000 };
+      if (roll < 0.7) return { text: "А777АА", region: "99", rarity: "ultra", points: 15000000 };
+      if (roll < 2.2) return { text: "Е999КХ", region: "50", rarity: "legendary", points: 5000000 };
 
       // Обычные/Редкие/Эпики
       const l1 = rand(letters), digits = String(Math.floor(Math.random() * 999) + 1).padStart(3, "0"), l2 = rand(letters), l3 = rand(letters), region = rand(regions);
-      const text = `${l1}${digits}${l2}${l3} ${region}`;
+      const text = `${l1}${digits}${l2}${l3}`;
       
       const d = digits.split("");
+      // Эпики (10% шанс)
       if (d[0] === d[1] || d[1] === d[2] || l1 === l2 || l2 === l3 || l1 === l3) 
-        return { text, rarity: "epic", points: 800000 };
-      if (digits === "123" || digits === "321" || digits === "789" || digits === "987") 
-        return { text, rarity: "rare", points: 200000 };
+        return { text, region, rarity: "epic", points: 800000 };
       
-      return { text, rarity: "common", points: Math.floor(Math.random() * 50000) + 30000 };
+      // Редкие (15% шанс)
+      if (digits === "123" || digits === "321" || digits === "789" || digits === "987") 
+        return { text, region, rarity: "rare", points: 200000 };
+      
+      // Обычные (все остальное)
+      return { text, region, rarity: "common", points: Math.floor(Math.random() * 50000) + 30000 };
     }
 
-    // Анимация кручения
     function spin() {
-      if (isGenerating) return; // Защита от спама
+      if (isGenerating) return;
       isGenerating = true;
       
-      // Сброс UI
-      plateEl.classList.add("generating");
+      plateContainer.classList.add("generating");
       rarityEl.className = "rarity-tag common";
       rarityEl.textContent = "КРУТИМ...";
       priceEl.classList.remove("show");
@@ -319,7 +347,8 @@
       let ticks = 0;
       const spinInterval = setInterval(() => {
         const temp = generatePlate();
-        plateEl.textContent = temp.text;
+        plateTextEl.textContent = temp.text;
+        plateRegionEl.textContent = temp.region;
         ticks++;
         if (ticks > 10) {
           clearInterval(spinInterval);
@@ -334,8 +363,9 @@
       currentRarity = result.rarity;
       currentPrice = result.points;
       
-      plateEl.classList.remove("generating");
-      plateEl.textContent = result.text;
+      plateContainer.classList.remove("generating");
+      plateTextEl.textContent = result.text;
+      plateRegionEl.textContent = result.region;
       
       rarityEl.className = "rarity-tag " + result.rarity;
       rarityEl.textContent = getRarityName(result.rarity);
@@ -345,7 +375,6 @@
       
       isGenerating = false;
 
-      // Если выпал топ - показываем уведомление
       if (["legendary", "ultra", "mythic"].includes(result.rarity)) {
         showToast(result);
       }
@@ -360,15 +389,12 @@
       return "ОБЫЧНЫЙ";
     }
 
-    // Добавление в гараж (Клик по экрану)
     function collect() {
       if (isGenerating || !currentPlate) return;
       
       if (["legendary", "ultra", "mythic"].includes(currentRarity)) {
-        // В сейф
         safe.push({ text: currentPlate, rarity: currentRarity, price: currentPrice });
       } else {
-        // В обычный гараж
         if (garage.length >= maxGarage) {
           alert("Гараж переполнен! Купи улучшение или очисти гараж.");
           return;
@@ -377,34 +403,31 @@
       }
       
       score += currentPrice;
-      currentPlate = null; // Сбрасываем, чтобы не задублировать
+      currentPlate = null;
       
       save();
       render();
       
-      // Визуальный отклик
-      plateEl.textContent = "+ " + formatMoney(currentPrice) + " ₽";
+      plateTextEl.textContent = "+ " + formatMoney(currentPrice) + " ₽";
+      plateRegionEl.textContent = "";
       rarityEl.textContent = "ПОЛУЧЕНО";
       priceEl.classList.remove("show");
     }
 
-    // Всплывашка
     function showToast(res) {
       toastTitle.textContent = getRarityName(res.rarity) + "!";
-      toastText.textContent = res.text;
+      toastText.textContent = res.text + " (" + res.region + ")";
       toastPrice.textContent = formatMoney(res.points) + " ₽";
       toast.classList.add("show");
       
       setTimeout(() => toast.classList.remove("show"), 3000);
     }
 
-    // Отрисовка
     function render() {
       scoreEl.textContent = formatMoney(score);
       countEl.textContent = garage.length;
       maxGarageEl.textContent = maxGarage;
       
-      // Гараж
       garageEl.innerHTML = "";
       garage.slice().reverse().forEach(item => { 
         const div = document.createElement("div"); 
@@ -413,7 +436,6 @@
         garageEl.appendChild(div); 
       });
       
-      // Сейф (в меню)
       safeGrid.innerHTML = "";
       if (safe.length === 0) {
         safeGrid.innerHTML = '<div style="color: #555; grid-column: 1 / -1;">Пока пусто...</div>';
@@ -426,7 +448,6 @@
         });
       }
       
-      // Обновление кнопки улучшения
       const upgradeCost = 500000;
       if (score >= upgradeCost) {
         upgradeBtn.disabled = false;
@@ -437,7 +458,6 @@
       }
     }
 
-    // Ивенты
     gameArea.addEventListener("click", () => {
       if (currentPlate && !isGenerating) {
         collect();
@@ -446,7 +466,6 @@
       }
     });
 
-    // Прокачка
     upgradeBtn.addEventListener("click", () => {
       const cost = 500000;
       if (score >= cost) {
@@ -457,22 +476,19 @@
       }
     });
 
-    // Очистка обычного гаража (безопасно)
     clearBtn.addEventListener("click", () => {
       if (confirm("Продать все обычные номера из гаража? Сейф останется нетронутым.")) {
-        garage.forEach(item => score += item.price); // Возвращаем деньги (или можно просто удалить)
+        garage.forEach(item => score += item.price);
         garage = [];
         save();
         render();
       }
     });
 
-    // Меню
     menuBtn.addEventListener("click", () => modal.classList.add("active"));
     closeModal.addEventListener("click", () => modal.classList.remove("active"));
     modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("active"); });
 
-    // Инициализация
     render();
   </script>
 </body>
