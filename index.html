@@ -65,6 +65,7 @@
       padding-top: 60px;
     }
 
+    /* ====== БАЗОВЫЙ НОМЕР ====== */
     .real-plate {
       display: flex;
       background: #e6e6e6;
@@ -73,7 +74,7 @@
       padding: 10px 20px;
       box-shadow: 0 10px 50px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.1);
       margin-bottom: 40px;
-      transition: all 0.2s ease;
+      transition: all 0.4s ease;
       position: relative;
       font-family: 'Arial Narrow', Arial, sans-serif;
       width: 90%;
@@ -82,21 +83,21 @@
     }
     .real-plate.generating { opacity: 0.3; filter: blur(3px); }
 
+    /* Свечение для топов */
+    .real-plate.legendary { box-shadow: 0 0 60px 10px rgba(255, 215, 0, 0.8), inset 0 0 20px rgba(255, 215, 0, 0.3); border-color: #ffd54f; }
+    .real-plate.ultra { box-shadow: 0 0 60px 10px rgba(0, 188, 212, 0.8), inset 0 0 20px rgba(0, 188, 212, 0.3); border-color: #00bcd4; }
+    .real-plate.mythic { box-shadow: 0 0 60px 10px rgba(233, 30, 99, 0.8), inset 0 0 20px rgba(233, 30, 99, 0.3); border-color: #e91e63; }
+
     .plate-left { display: flex; align-items: center; position: relative; flex: 1; padding-left: 20px; }
-
     .plate-text { font-size: 6.5rem; font-weight: 900; color: #000; letter-spacing: 4px; line-height: 1; text-shadow: 1px 1px 0px rgba(0,0,0,0.2); }
-
     .plate-right { display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 3px solid #000; padding-left: 20px; padding-right: 10px; }
-
     .plate-region { font-size: 2rem; font-weight: bold; color: #000; line-height: 1; margin-bottom: 5px; letter-spacing: 1px; }
-
     .plate-rus-box { display: flex; align-items: center; gap: 5px; }
     .plate-rus { font-size: 1rem; font-weight: bold; color: #000; line-height: 1; }
     .flag-small { display: flex; flex-direction: column; width: 20px; height: 14px; border: 1px solid #000; }
     .f-white { flex: 1; background: #fff; }
     .f-blue { flex: 1; background: #0039a6; }
     .f-red { flex: 1; background: #d52b1e; }
-
     .bolt { width: 12px; height: 12px; background: #333; border-radius: 50%; position: absolute; top: 50%; transform: translateY(-50%); box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.5); }
     .bolt-left { left: 5px; }
     .bolt-right { left: 30px; }
@@ -112,20 +113,80 @@
     .price-display { font-size: 2.5rem; font-weight: 900; color: #4caf50; text-shadow: 0 0 20px rgba(76, 175, 80, 0.5); opacity: 0; transition: opacity 0.3s; }
     .price-display.show { opacity: 1; }
 
-    /* Модальное окно */
-    .modal-overlay {
+    /* ====== ВСПЛЫВАЮЩАЯ КАРТОЧКА (ИНФА) ====== */
+    .info-modal {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-      display: none; justify-content: center; align-items: center; z-index: 100;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+      display: none; justify-content: center; align-items: center; z-index: 200;
+      cursor: pointer;
     }
-    .modal-overlay.active { display: flex; }
+    .info-modal.active { display: flex; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .info-card {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 20px;
+      padding: 40px;
+      width: 90%;
+      max-width: 550px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+      position: relative;
+    }
     
-    .modal-content {
-      background: #111; border: 1px solid #333; border-radius: 20px;
-      width: 90%; max-width: 700px; padding: 30px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-      max-height: 85vh; overflow-y: auto;
+    /* Цвета рамки карточки */
+    .info-card.legendary { border-color: #ffd54f; box-shadow: 0 0 50px rgba(255, 215, 0, 0.2); }
+    .info-card.ultra { border-color: #00bcd4; box-shadow: 0 0 50px rgba(0, 188, 212, 0.2); }
+    .info-card.mythic { border-color: #e91e63; box-shadow: 0 0 50px rgba(233, 30, 99, 0.2); }
+
+    .info-card .subtitle { font-size: 0.8rem; letter-spacing: 2px; color: #666; text-transform: uppercase; margin-bottom: 5px; }
+    
+    /* Цвета текста редкости */
+    .info-card.legendary .rarity-text { color: #ffd54f; text-shadow: 0 0 15px rgba(255,213,79,0.5); }
+    .info-card.ultra .rarity-text { color: #00bcd4; text-shadow: 0 0 15px rgba(0,188,212,0.5); }
+    .info-card.mythic .rarity-text { color: #e91e63; text-shadow: 0 0 15px rgba(233,30,99,0.5); }
+    
+    .info-card .rarity-text { font-size: 1.5rem; font-weight: 900; margin-bottom: 25px; text-transform: uppercase; }
+
+    .info-card .plate-img {
+      display: flex;
+      background: #e6e6e6;
+      border: 3px solid #000;
+      border-radius: 8px;
+      padding: 10px 20px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      font-family: 'Arial Narrow', Arial, sans-serif;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
+    .info-card .plate-img .plate-text { font-size: 3.5rem; color: #000; font-weight: 900; letter-spacing: 2px; }
+    .info-card .plate-img .plate-right { border-left: 3px solid #000; padding-left: 15px; }
+    .info-card .plate-img .plate-region { font-size: 1.3rem; }
+    .info-card .plate-img .plate-rus { font-size: 0.7rem; }
+
+    .info-card .price-label { font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+    
+    /* Цвета цены */
+    .info-card.legendary .top-price { color: #ffd54f; }
+    .info-card.ultra .top-price { color: #00bcd4; }
+    .info-card.mythic .top-price { color: #e91e63; }
+    
+    .info-card .top-price { font-size: 2.5rem; font-weight: 900; margin-bottom: 20px; text-shadow: 0 0 20px currentColor; }
+
+    .info-card .reason { font-size: 1rem; color: #ccc; margin-bottom: 5px; font-weight: bold; }
+    .info-card .reason-details { font-size: 0.85rem; color: #777; line-height: 1.5; margin-bottom: 30px; }
+
+    .info-card .click-hint {
+      background: #222; color: #aaa; border-radius: 20px; padding: 10px 20px;
+      font-size: 0.9rem; display: inline-block; border: 1px solid #444;
+    }
+
+    /* Модальное окно МЕНЮ */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 100; }
+    .modal-overlay.active { display: flex; }
+    .modal-content { background: #111; border: 1px solid #333; border-radius: 20px; width: 90%; max-width: 700px; padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); max-height: 85vh; overflow-y: auto; }
     .modal-content h2 { margin-bottom: 20px; font-size: 1.8rem; border-bottom: 1px solid #333; padding-bottom: 10px; }
     .close-btn { float: right; cursor: pointer; color: #f44336; font-size: 1.5rem; font-weight: bold; }
     .close-btn:hover { color: #ff5252; }
@@ -135,39 +196,26 @@
     .upgrade-btn:hover { background: #5cb860; }
     .upgrade-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
 
-    /* Сетки номеров в меню */
     .inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
-    
-    .inv-card {
-      background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 15px;
-      display: flex; flex-direction: column; align-items: center; text-align: center; position: relative;
-    }
-    .inv-card.legendary { border-color: #ffd54f; }
-    .inv-card.ultra { border-color: #00bcd4; }
-    .inv-card.mythic { border-color: #e91e63; }
-
+    .inv-card { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+    .inv-card.legendary { border-color: #ffd54f; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
+    .inv-card.ultra { border-color: #00bcd4; box-shadow: 0 0 15px rgba(0, 188, 212, 0.3); }
+    .inv-card.mythic { border-color: #e91e63; box-shadow: 0 0 15px rgba(233, 30, 99, 0.3); }
     .inv-card .card-plate { background: #fff; color: #000; padding: 5px 10px; border-radius: 5px; font-family: monospace; font-weight: bold; font-size: 1.2rem; margin-bottom: 5px; border: 2px solid #000; }
     .inv-card .card-price { color: #4caf50; font-weight: bold; font-size: 1rem; margin-bottom: 10px; }
-    
     .card-actions { display: flex; gap: 5px; width: 100%; }
     .card-btn { flex: 1; padding: 8px 0; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: 0.2s; color: #fff; }
-    .btn-sell { background: #4caf50; }
-    .btn-sell:hover { background: #5cb860; }
-    .btn-safe { background: #2196f3; }
-    .btn-safe:hover { background: #42a5f5; }
-    .btn-unsafe { background: #ff9800; color: #000; }
-    .btn-unsafe:hover { background: #ffa726; }
-
-    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #000; border: 2px solid #ffd54f; padding: 20px 40px; border-radius: 16px; text-align: center; z-index: 1000; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 0 50px rgba(255, 213, 79, 0.4); }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-    .toast h3 { color: #ffd54f; font-size: 1.5rem; margin-bottom: 5px; }
-    .toast p { font-size: 1.2rem; color: #fff; }
-    .toast .toast-price { color: #4caf50; font-size: 1.8rem; font-weight: 900; margin-top: 10px; }
+    .btn-sell { background: #4caf50; } .btn-sell:hover { background: #5cb860; }
+    .btn-safe { background: #2196f3; } .btn-safe:hover { background: #42a5f5; }
+    .btn-unsafe { background: #ff9800; color: #000; } .btn-unsafe:hover { background: #ffa726; }
 
     @media (max-width: 600px) {
       .plate-text { font-size: 4rem; letter-spacing: 2px; }
       .plate-region { font-size: 1.5rem; }
       .top-stats { font-size: 0.8rem; gap: 10px; padding: 5px 10px; }
+      .info-card .plate-img .plate-text { font-size: 2.5rem; }
+      .info-card .top-price { font-size: 2rem; }
+      .info-card { padding: 20px; }
     }
   </style>
 </head>
@@ -181,6 +229,7 @@
     </div>
   </div>
 
+  <!-- Игровая зона -->
   <div class="game-area" id="gameArea">
     <div class="real-plate" id="plateContainer">
       <div class="plate-left">
@@ -200,9 +249,38 @@
         </div>
       </div>
     </div>
-
+    
     <div id="rarity" class="rarity-tag common">НАЖМИ, ЧТОБЫ КРУТИТЬ</div>
     <div id="price" class="price-display">0 ₽</div>
+  </div>
+
+  <!-- ВСПЛЫВАЮЩЕЕ ОКНО С ИНФОЙ -->
+  <div class="info-modal" id="infoModal">
+    <div class="info-card" id="infoCard" onclick="event.stopPropagation()">
+      <div class="subtitle">Редкость определена</div>
+      <div class="rarity-text" id="infoRarityName">ЛЕГЕНДАРНЫЙ</div>
+      
+      <div class="plate-img">
+        <div class="plate-text" id="infoPlateText">А777АА</div>
+        <div class="plate-right">
+          <div class="plate-region" id="infoPlateRegion">99</div>
+          <div class="plate-rus-box">
+            <div class="plate-rus">RUS</div>
+            <div class="flag-small"><div class="f-white"></div><div class="f-blue"></div><div class="f-red"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="price-label">Стоимость рассчитана</div>
+      <div class="top-price" id="infoPrice">5 000 000 ₽</div>
+
+      <div class="reason" id="infoReason">Зеркальный трипл</div>
+      <div class="reason-details" id="infoReasonDetails">
+        Цифры 777<br>Буквы АА
+      </div>
+
+      <div class="click-hint">Кликните в любом месте, чтобы забрать</div>
+    </div>
   </div>
 
   <!-- МОДАЛЬНОЕ ОКНО (МЕНЮ) -->
@@ -211,34 +289,21 @@
       <span class="close-btn" id="closeModal">✖</span>
       <h2>Меню</h2>
       
-      <!-- ПРОКАЧКА -->
       <h3 style="margin-bottom: 15px; color: #aaa;">Улучшения</h3>
       <div class="upgrade-item">
         <div>
           <div style="font-weight: bold;">Расширение гаража</div>
-          <div style="font-size: 0.8rem; color: #888;">+5 слотов (Текущий максимум: <span id="menuMaxGarage">10</span>)</div>
+          <div style="font-size: 0.8rem; color: #888;">+5 слотов (Макс: <span id="menuMaxGarage">10</span>)</div>
         </div>
         <button class="upgrade-btn" id="upgradeBtn">500 000 ₽</button>
       </div>
 
-      <!-- ГАРАЖ -->
       <h3 style="margin: 25px 0 15px; color: #aaa;">🚗 Мой Гараж</h3>
-      <div class="inv-grid" id="menuGarage">
-        <div style="color: #555;">Пока пусто...</div>
-      </div>
+      <div class="inv-grid" id="menuGarage"></div>
 
-      <!-- СЕЙФ -->
       <h3 style="margin: 25px 0 15px; color: #aaa;">🔒 Сейф (Топ-номера)</h3>
-      <div class="inv-grid" id="menuSafe">
-        <div style="color: #555;">Пока пусто...</div>
-      </div>
+      <div class="inv-grid" id="menuSafe"></div>
     </div>
-  </div>
-
-  <div class="toast" id="toast">
-    <h3 id="toastTitle">ЛЕГЕНДА!</h3>
-    <p id="toastText">Вы выбили номер!</p>
-    <div class="toast-price" id="toastPrice">0 ₽</div>
   </div>
 
   <script>
@@ -257,10 +322,20 @@
     const plateContainer = document.getElementById("plateContainer"), plateTextEl = document.getElementById("plateText"), plateRegionEl = document.getElementById("plateRegion");
     const rarityEl = document.getElementById("rarity"), priceEl = document.getElementById("price");
     const gameArea = document.getElementById("gameArea");
+    
+    // Элементы всплывающего окна
+    const infoModal = document.getElementById("infoModal");
+    const infoCard = document.getElementById("infoCard");
+    const infoRarityName = document.getElementById("infoRarityName");
+    const infoPlateText = document.getElementById("infoPlateText");
+    const infoPlateRegion = document.getElementById("infoPlateRegion");
+    const infoPrice = document.getElementById("infoPrice");
+    const infoReason = document.getElementById("infoReason");
+    const infoReasonDetails = document.getElementById("infoReasonDetails");
+
     const modal = document.getElementById("modal"), menuBtn = document.getElementById("menuBtn"), closeModal = document.getElementById("closeModal");
     const upgradeBtn = document.getElementById("upgradeBtn");
     const menuGarage = document.getElementById("menuGarage"), menuSafe = document.getElementById("menuSafe");
-    const toast = document.getElementById("toast"), toastTitle = document.getElementById("toastTitle"), toastText = document.getElementById("toastText"), toastPrice = document.getElementById("toastPrice");
 
     function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
     function formatMoney(num) { return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
@@ -275,10 +350,10 @@
     function generatePlate() {
       const roll = Math.random() * 100;
       
-      if (roll < 0.05) return { text: "Т228ЗОН", region: "228", rarity: "mythic", points: 150000000 };
-      if (roll < 0.2) return { text: "О001ОО", region: "77", rarity: "mythic", points: 50000000 };
-      if (roll < 0.7) return { text: "А777АА", region: "99", rarity: "ultra", points: 15000000 };
-      if (roll < 2.2) return { text: "Е999КХ", region: "50", rarity: "legendary", points: 5000000 };
+      if (roll < 0.05) return { text: "Т228ЗОН", region: "228", rarity: "mythic", points: 150000000, reason: "Секретный код", details: "Легендарная пасхалка<br>Особый статус" };
+      if (roll < 0.2) return { text: "О001ОО", region: "77", rarity: "mythic", points: 50000000, reason: "Идеальный номер", details: "Буквы и цифры совпадают<br>Московский регион" };
+      if (roll < 0.7) return { text: "А777АА", region: "99", rarity: "ultra", points: 15000000, reason: "Зеркальный трипл", details: "Цифры 777<br>Буквы АА" };
+      if (roll < 2.2) return { text: "Е999КХ", region: "50", rarity: "legendary", points: 5000000, reason: "Красивый трипл", details: "Цифры 999<br>Редкий код" };
 
       const l1 = rand(letters), digits = String(Math.floor(Math.random() * 999) + 1).padStart(3, "0"), l2 = rand(letters), l3 = rand(letters), region = rand(regions);
       const text = `${l1}${digits}${l2}${l3}`;
@@ -296,6 +371,9 @@
       if (isGenerating) return;
       isGenerating = true;
       
+      plateContainer.className = "real-plate";
+      infoModal.classList.remove("active");
+
       const roll = Math.random() * 100;
       const isTopTier = roll < 2.2; 
 
@@ -329,6 +407,7 @@
       currentPrice = result.points;
       
       plateContainer.classList.remove("generating");
+      
       plateTextEl.textContent = result.text;
       plateRegionEl.textContent = result.region;
       
@@ -338,11 +417,25 @@
       priceEl.textContent = `${formatMoney(result.points)} ₽`;
       priceEl.classList.add("show");
       
-      isGenerating = false;
-
       if (["legendary", "ultra", "mythic"].includes(result.rarity)) {
-        showToast(result);
+        plateContainer.classList.add(result.rarity);
+        showInfoModal(result);
       }
+      
+      isGenerating = false;
+    }
+
+    function showInfoModal(result) {
+      infoCard.className = "info-card " + result.rarity;
+      infoRarityName.textContent = getRarityName(result.rarity);
+      infoPlateText.textContent = result.text;
+      infoPlateRegion.textContent = result.region;
+      infoPrice.textContent = formatMoney(result.points) + " ₽";
+      
+      infoReason.textContent = result.reason || "Красивая комбинация";
+      infoReasonDetails.innerHTML = result.details || "Редкое сочетание<br>Уникальный код";
+
+      infoModal.classList.add("active");
     }
 
     function getRarityName(r) {
@@ -372,6 +465,8 @@
       currentPlate = null;
       plateTextEl.textContent = "---";
       plateRegionEl.textContent = "77";
+      plateContainer.className = "real-plate";
+      
       rarityEl.className = "rarity-tag common";
       rarityEl.textContent = "НАЖМИ, ЧТОБЫ КРУТИТЬ";
       priceEl.classList.remove("show");
@@ -381,19 +476,9 @@
       render();
     }
 
-    function showToast(res) {
-      toastTitle.textContent = getRarityName(res.rarity) + "!";
-      toastText.textContent = res.text + " (" + res.region + ")";
-      toastPrice.textContent = formatMoney(res.points) + " ₽";
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 3000);
-    }
-
-    // Отрисовка меню (гараж и сейф)
     function renderMenu() {
       menuMaxGarageEl.textContent = maxGarage;
       
-      // Гараж
       menuGarage.innerHTML = "";
       if (garage.length === 0) {
         menuGarage.innerHTML = '<div style="color: #555; grid-column: 1/-1;">Пока пусто...</div>';
@@ -413,7 +498,6 @@
         });
       }
 
-      // Сейф
       menuSafe.innerHTML = "";
       if (safe.length === 0) {
         menuSafe.innerHTML = '<div style="color: #555; grid-column: 1/-1;">Пока пусто...</div>';
@@ -434,18 +518,17 @@
       }
     }
 
-    // Глобальные функции для кнопок
     window.sellItem = function(location, index) {
       const list = location === 'garage' ? garage : safe;
       const item = list[index];
       score += item.price;
-      list.splice(index, 1); // Удаляем
+      list.splice(index, 1);
       save();
       render();
     };
 
     window.moveToSafe = function(index) {
-      if (safe.length >= 50) { alert("Сейф переполнен (макс 50)!"); return; } // Ограничение сейфа
+      if (safe.length >= 50) { alert("Сейф переполнен (макс 50)!"); return; }
       const item = garage[index];
       garage.splice(index, 1);
       safe.push(item);
@@ -476,15 +559,28 @@
         upgradeBtn.textContent = "Нужно " + formatMoney(upgradeCost) + " ₽";
       }
 
-      renderMenu(); // Обновляем списки в меню
+      renderMenu();
     }
 
+    // КЛИК ПО ЭКРАНУ (Если открыто окно инфы - закрываем его и собираем номер)
     gameArea.addEventListener("click", () => {
+      if (infoModal.classList.contains("active")) {
+        infoModal.classList.remove("active");
+        collect(); 
+        return;
+      }
+
       if (currentPlate && !isGenerating) {
         collect();
       } else if (!isGenerating && !currentPlate) {
         spin();
       }
+    });
+
+    // КЛИК ПО ВСПЛЫВАЮЩЕМУ ОКНУ (закрывает и собирает)
+    infoModal.addEventListener("click", () => {
+      infoModal.classList.remove("active");
+      collect();
     });
 
     upgradeBtn.addEventListener("click", () => {
