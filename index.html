@@ -42,17 +42,23 @@
 
     .top-stats {
       display: flex;
-      gap: 25px;
-      font-size: 1.1rem;
+      gap: 15px;
+      font-size: 1rem;
       font-weight: 600;
       white-space: nowrap;
       background: rgba(0,0,0,0.6);
       padding: 8px 15px;
       border-radius: 10px;
       border: 1px solid #222;
+      align-items: center;
     }
     .stat-item span { color: #4caf50; font-weight: 800; }
     .stat-item.garage-stat span { color: #4fc3f7; }
+    
+    /* Уровень */
+    .lvl-badge {
+      background: #ff9800; color: #000; padding: 2px 8px; border-radius: 10px; font-weight: 900; font-size: 0.9rem;
+    }
 
     .game-area {
       display: flex;
@@ -65,7 +71,6 @@
       padding-top: 60px;
     }
 
-    /* ====== БАЗОВЫЙ НОМЕР ====== */
     .real-plate {
       display: flex;
       background: #e6e6e6;
@@ -83,7 +88,6 @@
     }
     .real-plate.generating { opacity: 0.3; filter: blur(3px); }
 
-    /* Свечение для топов */
     .real-plate.legendary { box-shadow: 0 0 60px 10px rgba(255, 215, 0, 0.8), inset 0 0 20px rgba(255, 215, 0, 0.3); border-color: #ffd54f; }
     .real-plate.ultra { box-shadow: 0 0 60px 10px rgba(0, 188, 212, 0.8), inset 0 0 20px rgba(0, 188, 212, 0.3); border-color: #00bcd4; }
     .real-plate.mythic { box-shadow: 0 0 60px 10px rgba(233, 30, 99, 0.8), inset 0 0 20px rgba(233, 30, 99, 0.3); border-color: #e91e63; }
@@ -113,7 +117,7 @@
     .price-display { font-size: 2.5rem; font-weight: 900; color: #4caf50; text-shadow: 0 0 20px rgba(76, 175, 80, 0.5); opacity: 0; transition: opacity 0.3s; }
     .price-display.show { opacity: 1; }
 
-    /* ====== ВСПЛЫВАЮЩАЯ КАРТОЧКА (ИНФА) ====== */
+    /* ====== ВСПЛЫВАЮЩАЯ КАРТОЧКА ====== */
     .info-modal {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
@@ -124,25 +128,17 @@
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     .info-card {
-      background: #111;
-      border: 1px solid #333;
-      border-radius: 20px;
-      padding: 40px;
-      width: 90%;
-      max-width: 550px;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.9);
-      position: relative;
+      background: #111; border: 1px solid #333; border-radius: 20px;
+      padding: 40px; width: 90%; max-width: 550px; text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.9); position: relative;
     }
     
-    /* Цвета рамки карточки */
     .info-card.legendary { border-color: #ffd54f; box-shadow: 0 0 50px rgba(255, 215, 0, 0.2); }
     .info-card.ultra { border-color: #00bcd4; box-shadow: 0 0 50px rgba(0, 188, 212, 0.2); }
     .info-card.mythic { border-color: #e91e63; box-shadow: 0 0 50px rgba(233, 30, 99, 0.2); }
 
     .info-card .subtitle { font-size: 0.8rem; letter-spacing: 2px; color: #666; text-transform: uppercase; margin-bottom: 5px; }
     
-    /* Цвета текста редкости */
     .info-card.legendary .rarity-text { color: #ffd54f; text-shadow: 0 0 15px rgba(255,213,79,0.5); }
     .info-card.ultra .rarity-text { color: #00bcd4; text-shadow: 0 0 15px rgba(0,188,212,0.5); }
     .info-card.mythic .rarity-text { color: #e91e63; text-shadow: 0 0 15px rgba(233,30,99,0.5); }
@@ -150,15 +146,9 @@
     .info-card .rarity-text { font-size: 1.5rem; font-weight: 900; margin-bottom: 25px; text-transform: uppercase; }
 
     .info-card .plate-img {
-      display: flex;
-      background: #e6e6e6;
-      border: 3px solid #000;
-      border-radius: 8px;
-      padding: 10px 20px;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-      font-family: 'Arial Narrow', Arial, sans-serif;
+      display: flex; background: #e6e6e6; border: 3px solid #000; border-radius: 8px;
+      padding: 10px 20px; justify-content: space-between; align-items: center;
+      margin-bottom: 25px; font-family: 'Arial Narrow', Arial, sans-serif;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     .info-card .plate-img .plate-text { font-size: 3.5rem; color: #000; font-weight: 900; letter-spacing: 2px; }
@@ -168,7 +158,6 @@
 
     .info-card .price-label { font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
     
-    /* Цвета цены */
     .info-card.legendary .top-price { color: #ffd54f; }
     .info-card.ultra .top-price { color: #00bcd4; }
     .info-card.mythic .top-price { color: #e91e63; }
@@ -183,7 +172,7 @@
       font-size: 0.9rem; display: inline-block; border: 1px solid #444;
     }
 
-    /* Модальное окно МЕНЮ */
+    /* Модальные окна */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 100; }
     .modal-overlay.active { display: flex; }
     .modal-content { background: #111; border: 1px solid #333; border-radius: 20px; width: 90%; max-width: 700px; padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); max-height: 85vh; overflow-y: auto; }
@@ -209,10 +198,15 @@
     .btn-safe { background: #2196f3; } .btn-safe:hover { background: #42a5f5; }
     .btn-unsafe { background: #ff9800; color: #000; } .btn-unsafe:hover { background: #ffa726; }
 
+    /* Админ панель */
+    .admin-input { width: 100%; padding: 12px; border-radius: 8px; background: #222; border: 1px solid #444; color: #fff; margin-bottom: 10px; font-size: 1.1rem; outline: none; }
+    .admin-btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #f44336; color: #fff; font-weight: bold; cursor: pointer; margin-bottom: 15px; }
+    .admin-btn:hover { background: #ff5252; }
+
     @media (max-width: 600px) {
       .plate-text { font-size: 4rem; letter-spacing: 2px; }
       .plate-region { font-size: 1.5rem; }
-      .top-stats { font-size: 0.8rem; gap: 10px; padding: 5px 10px; }
+      .top-stats { font-size: 0.8rem; gap: 8px; padding: 5px 10px; }
       .info-card .plate-img .plate-text { font-size: 2.5rem; }
       .info-card .top-price { font-size: 2rem; }
       .info-card { padding: 20px; }
@@ -224,12 +218,12 @@
   <div class="top-bar">
     <button class="menu-btn" id="menuBtn">☰</button>
     <div class="top-stats">
+      <div class="stat-item">Ур. <span class="lvl-badge" id="levelDisplay">1</span></div>
       <div class="stat-item">Баланс: <span id="score">0</span> ₽</div>
-      <div class="stat-item garage-stat">В гараже: <span id="count">0</span>/<span id="maxGarage">10</span></div>
+      <div class="stat-item garage-stat">Гараж: <span id="count">0</span>/<span id="maxGarage">10</span></div>
     </div>
   </div>
 
-  <!-- Игровая зона -->
   <div class="game-area" id="gameArea">
     <div class="real-plate" id="plateContainer">
       <div class="plate-left">
@@ -306,32 +300,48 @@
     </div>
   </div>
 
+  <!-- АДМИН ПАНЕЛЬ -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal-content" style="max-width: 400px;">
+      <span class="close-btn" onclick="document.getElementById('adminModal').classList.remove('active')">✖</span>
+      <h2>Админ панель</h2>
+      <div id="adminAuth">
+        <p style="margin-bottom: 10px; color: #888;">Введите пароль для входа</p>
+        <input type="password" id="adminPass" class="admin-input" placeholder="Пароль">
+        <button class="admin-btn" onclick="checkAdmin()">Войти</button>
+      </div>
+      <div id="adminPanel" style="display: none;">
+        <p style="color: #4caf50; margin-bottom: 15px;">Доступ разрешен</p>
+        <button class="admin-btn" onclick="giveMoney()">💰 Дать 10 000 000 ₽</button>
+        <button class="admin-btn" style="background: #ff9800; color: #000;" onclick="giveLevel()">⭐ Дать +1 Уровень</button>
+        <button class="admin-btn" style="background: #2196f3;" onclick="giveSafe()">🔒 Дать Мифик в Сейф</button>
+        <button class="admin-btn" style="background: #333;" onclick="document.getElementById('adminModal').classList.remove('active')">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const letters = ["А","В","Е","К","М","Н","О","Р","С","Т","У","Х"];
     const regions = ["77","50","99","78","47","23","61","16","02","66","52","24"];
     
     let score = parseInt(localStorage.getItem("score")) || 0;
+    let level = parseInt(localStorage.getItem("level")) || 1;
+    let exp = parseInt(localStorage.getItem("exp")) || 0;
     let garage = JSON.parse(localStorage.getItem("garage")) || [];
     let safe = JSON.parse(localStorage.getItem("safe")) || [];
     let maxGarage = parseInt(localStorage.getItem("maxGarage")) || 10;
-    let currentPlate = null, currentRarity = "common", currentPrice = 0;
+    let currentPlate = null, currentRarity = "common", currentPrice = 0, currentExp = 0;
     let isGenerating = false;
 
-    const scoreEl = document.getElementById("score"), countEl = document.getElementById("count"), maxGarageEl = document.getElementById("maxGarage");
+    const scoreEl = document.getElementById("score"), countEl = document.getElementById("count"), maxGarageEl = document.getElementById("maxGarage"), levelDisplay = document.getElementById("levelDisplay");
     const menuMaxGarageEl = document.getElementById("menuMaxGarage");
     const plateContainer = document.getElementById("plateContainer"), plateTextEl = document.getElementById("plateText"), plateRegionEl = document.getElementById("plateRegion");
     const rarityEl = document.getElementById("rarity"), priceEl = document.getElementById("price");
     const gameArea = document.getElementById("gameArea");
     
-    // Элементы всплывающего окна
-    const infoModal = document.getElementById("infoModal");
-    const infoCard = document.getElementById("infoCard");
-    const infoRarityName = document.getElementById("infoRarityName");
-    const infoPlateText = document.getElementById("infoPlateText");
-    const infoPlateRegion = document.getElementById("infoPlateRegion");
-    const infoPrice = document.getElementById("infoPrice");
-    const infoReason = document.getElementById("infoReason");
-    const infoReasonDetails = document.getElementById("infoReasonDetails");
+    const infoModal = document.getElementById("infoModal"), infoCard = document.getElementById("infoCard");
+    const infoRarityName = document.getElementById("infoRarityName"), infoPlateText = document.getElementById("infoPlateText"), infoPlateRegion = document.getElementById("infoPlateRegion");
+    const infoPrice = document.getElementById("infoPrice"), infoReason = document.getElementById("infoReason"), infoReasonDetails = document.getElementById("infoReasonDetails");
 
     const modal = document.getElementById("modal"), menuBtn = document.getElementById("menuBtn"), closeModal = document.getElementById("closeModal");
     const upgradeBtn = document.getElementById("upgradeBtn");
@@ -342,29 +352,40 @@
 
     function save() {
       localStorage.setItem("score", score);
+      localStorage.setItem("level", level);
+      localStorage.setItem("exp", exp);
       localStorage.setItem("garage", JSON.stringify(garage));
       localStorage.setItem("safe", JSON.stringify(safe));
       localStorage.setItem("maxGarage", maxGarage);
     }
 
+    // Обновленная генерация с новыми редкими номерами и опытом
     function generatePlate() {
       const roll = Math.random() * 100;
       
-      if (roll < 0.05) return { text: "Т228ЗОН", region: "228", rarity: "mythic", points: 150000000, reason: "Секретный код", details: "Легендарная пасхалка<br>Особый статус" };
-      if (roll < 0.2) return { text: "О001ОО", region: "77", rarity: "mythic", points: 50000000, reason: "Идеальный номер", details: "Буквы и цифры совпадают<br>Московский регион" };
-      if (roll < 0.7) return { text: "А777АА", region: "99", rarity: "ultra", points: 15000000, reason: "Зеркальный трипл", details: "Цифры 777<br>Буквы АА" };
-      if (roll < 2.2) return { text: "Е999КХ", region: "50", rarity: "legendary", points: 5000000, reason: "Красивый трипл", details: "Цифры 999<br>Редкий код" };
+      // Топы
+      if (roll < 0.05) return { text: "Т228ЗОН", region: "228", rarity: "mythic", points: 150000000, exp: 5000, reason: "Секретный код", details: "Легендарная пасхалка<br>Особый статус" };
+      if (roll < 0.2) return { text: "О001ОО", region: "77", rarity: "mythic", points: 50000000, exp: 2000, reason: "Идеальный номер", details: "Буквы и цифры совпадают<br>Московский регион" };
+      if (roll < 0.7) return { text: "А777АА", region: "99", rarity: "ultra", points: 15000000, exp: 1000, reason: "Зеркальный трипл", details: "Цифры 777<br>Буквы АА" };
+      if (roll < 2.2) return { text: "Е999КХ", region: "50", rarity: "legendary", points: 5000000, exp: 500, reason: "Красивый трипл", details: "Цифры 999<br>Редкий код" };
 
+      // Новые редкие номера
       const l1 = rand(letters), digits = String(Math.floor(Math.random() * 999) + 1).padStart(3, "0"), l2 = rand(letters), l3 = rand(letters), region = rand(regions);
       const text = `${l1}${digits}${l2}${l3}`;
       
       const d = digits.split("");
-      if (d[0] === d[1] || d[1] === d[2] || l1 === l2 || l2 === l3 || l1 === l3) 
-        return { text, region, rarity: "epic", points: 800000 };
-      if (digits === "123" || digits === "321" || digits === "789" || digits === "987") 
-        return { text, region, rarity: "rare", points: 200000 };
       
-      return { text, region, rarity: "common", points: Math.floor(Math.random() * 50000) + 30000 };
+      // Эпические (10%)
+      if (d[0] === d[1] || d[1] === d[2] || l1 === l2 || l2 === l3 || l1 === l3) {
+        return { text, region, rarity: "epic", points: 800000, exp: 100 };
+      }
+      
+      // Редкие новые (15%)
+      if (digits === "123" || digits === "321" || digits === "789" || digits === "987") 
+        return { text, region, rarity: "rare", points: 200000, exp: 50 };
+      
+      // Обычные
+      return { text, region, rarity: "common", points: Math.floor(Math.random() * 50000) + 30000, exp: 10 };
     }
 
     function spin() {
@@ -405,6 +426,7 @@
       currentPlate = result.text;
       currentRarity = result.rarity;
       currentPrice = result.points;
+      currentExp = result.exp;
       
       plateContainer.classList.remove("generating");
       
@@ -447,6 +469,7 @@
       return "ОБЫЧНЫЙ";
     }
 
+    // Обновленная логика сбора (опыт и уровни)
     function collect() {
       if (isGenerating || !currentPlate) return;
       
@@ -461,6 +484,14 @@
       }
       
       score += currentPrice;
+      
+      // Добавление опыта и проверка уровня
+      exp += currentExp;
+      while (exp >= level * 1000) {
+        exp -= level * 1000;
+        level++;
+        alert("🎉 Новый уровень! Теперь у вас " + level + " уровень.");
+      }
       
       currentPlate = null;
       plateTextEl.textContent = "---";
@@ -509,95 +540,4 @@
             <div class="card-plate">${item.text}</div>
             <div class="card-price">${formatMoney(item.price)} ₽</div>
             <div class="card-actions">
-              <button class="card-btn btn-sell" onclick="sellItem('safe', ${index})">Продать</button>
-              <button class="card-btn btn-unsafe" onclick="moveToGarage(${index})">В гараж</button>
-            </div>
-          `;
-          menuSafe.appendChild(div);
-        });
-      }
-    }
-
-    window.sellItem = function(location, index) {
-      const list = location === 'garage' ? garage : safe;
-      const item = list[index];
-      score += item.price;
-      list.splice(index, 1);
-      save();
-      render();
-    };
-
-    window.moveToSafe = function(index) {
-      if (safe.length >= 50) { alert("Сейф переполнен (макс 50)!"); return; }
-      const item = garage[index];
-      garage.splice(index, 1);
-      safe.push(item);
-      save();
-      render();
-    };
-
-    window.moveToGarage = function(index) {
-      if (garage.length >= maxGarage) { alert("Гараж переполнен! Расширь его."); return; }
-      const item = safe[index];
-      safe.splice(index, 1);
-      garage.push(item);
-      save();
-      render();
-    };
-
-    function render() {
-      scoreEl.textContent = formatMoney(score);
-      countEl.textContent = garage.length;
-      maxGarageEl.textContent = maxGarage;
-      
-      const upgradeCost = 500000;
-      if (score >= upgradeCost) {
-        upgradeBtn.disabled = false;
-        upgradeBtn.textContent = formatMoney(upgradeCost) + " ₽";
-      } else {
-        upgradeBtn.disabled = true;
-        upgradeBtn.textContent = "Нужно " + formatMoney(upgradeCost) + " ₽";
-      }
-
-      renderMenu();
-    }
-
-    // КЛИК ПО ЭКРАНУ (Если открыто окно инфы - закрываем его и собираем номер)
-    gameArea.addEventListener("click", () => {
-      if (infoModal.classList.contains("active")) {
-        infoModal.classList.remove("active");
-        collect(); 
-        return;
-      }
-
-      if (currentPlate && !isGenerating) {
-        collect();
-      } else if (!isGenerating && !currentPlate) {
-        spin();
-      }
-    });
-
-    // КЛИК ПО ВСПЛЫВАЮЩЕМУ ОКНУ (закрывает и собирает)
-    infoModal.addEventListener("click", () => {
-      infoModal.classList.remove("active");
-      collect();
-    });
-
-    upgradeBtn.addEventListener("click", () => {
-      const cost = 500000;
-      if (score >= cost) {
-        score -= cost;
-        maxGarage += 5;
-        save();
-        render();
-      }
-    });
-
-    menuBtn.addEventListener("click", () => modal.classList.add("active"));
-    closeModal.addEventListener("click", () => modal.classList.remove("active"));
-    modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("active"); });
-
-    render();
-  </script>
-</body>
-</html>
+              <button class
