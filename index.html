@@ -55,7 +55,6 @@
     .stat-item span { color: #4caf50; font-weight: 800; }
     .stat-item.garage-stat span { color: #4fc3f7; }
     
-    /* Уровень */
     .lvl-badge {
       background: #ff9800; color: #000; padding: 2px 8px; border-radius: 10px; font-weight: 900; font-size: 0.9rem;
     }
@@ -117,7 +116,7 @@
     .price-display { font-size: 2.5rem; font-weight: 900; color: #4caf50; text-shadow: 0 0 20px rgba(76, 175, 80, 0.5); opacity: 0; transition: opacity 0.3s; }
     .price-display.show { opacity: 1; }
 
-    /* ====== ВСПЛЫВАЮЩАЯ КАРТОЧКА ====== */
+    /* ВСПЛЫВАЮЩАЯ КАРТОЧКА */
     .info-modal {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
@@ -359,7 +358,6 @@
       localStorage.setItem("maxGarage", maxGarage);
     }
 
-    // Обновленная генерация с новыми редкими номерами и опытом
     function generatePlate() {
       const roll = Math.random() * 100;
       
@@ -469,7 +467,6 @@
       return "ОБЫЧНЫЙ";
     }
 
-    // Обновленная логика сбора (опыт и уровни)
     function collect() {
       if (isGenerating || !currentPlate) return;
       
@@ -485,12 +482,12 @@
       
       score += currentPrice;
       
-      // Добавление опыта и проверка уровня
+      // Добавление опыта
       exp += currentExp;
       while (exp >= level * 1000) {
         exp -= level * 1000;
         level++;
-        alert("🎉 Новый уровень! Теперь у вас " + level + " уровень.");
+        setTimeout(() => alert("🎉 Новый уровень! Теперь у вас " + level + " уровень."), 100);
       }
       
       currentPlate = null;
@@ -540,4 +537,4 @@
             <div class="card-plate">${item.text}</div>
             <div class="card-price">${formatMoney(item.price)} ₽</div>
             <div class="card-actions">
-              <button class
+              <button class="card-btn btn-sell" onclick="sellItem('safe', ${index})">Продать
