@@ -537,4 +537,142 @@
             <div class="card-plate">${item.text}</div>
             <div class="card-price">${formatMoney(item.price)} ₽</div>
             <div class="card-actions">
-              <button class="card-btn btn-sell" onclick="sellItem('safe', ${index})">Продать
+              <button class="card-btn btn-sell" onclick="sellItem('safe', ${index})">Продать</button>
+              <button class="card-btn btn-unsafe" onclick="moveToGarage(${index})">В гараж</button>
+            </div>
+          `;
+          menuSafe.appendChild(div);
+        });
+      }
+    }
+
+    window.sellItem = function(location, index) {
+      const list = location === 'garage' ? garage : safe;
+      const item = list[index];
+      score += item.price;
+      list.splice(index, 1);
+      save();
+      render();
+    };
+
+    window.moveToSafe = function(index) {
+      if (safe.length >= 50) { alert("Сейф переполнен (макс 50)!"); return; }
+      const item = garage[index];
+      garage.splice(index, 1);
+      safe.push(item);
+      save();
+      render();
+    };
+
+    window.moveToGarage = function(index) {
+      if (garage.length >= maxGarage) { alert("Гараж переполнен! Расширь его."); return; }
+      const item = safe[index];
+      safe.splice(index, 1);
+      garage.push(item);
+      save();
+      render();
+    };
+
+    function render() {
+      scoreEl.textContent = formatMoney(score);
+      countEl.textContent = garage.length;
+      maxGarageEl.textContent = maxGarage;
+      levelDisplay.textContent = level;
+      
+      const upgradeCost = 500000;
+      if (score >= upgradeCost) {
+        upgradeBtn.disabled = false;
+        upgradeBtn.textContent = formatMoney(upgradeCost) + " ₽";
+      } else {
+        upgradeBtn.disabled = true;
+        upgradeBtn.textContent = "Нужно " + formatMoney(upgradeCost) + " ₽";
+      }
+
+      renderMenu();
+    }
+
+    // Игровой клик
+    gameArea.addEventListener("click", () => {
+      if (infoModal.classList.contains("active")) {
+        infoModal.classList.remove("active");
+        collect(); 
+        return;
+      }
+
+      if (currentPlate && !isGenerating) {
+        collect();
+      } else if (!isGenerating && !currentPlate) {
+        spin();
+      }
+    });
+
+    infoModal.addEventListener("click", () => {
+      infoModal.classList.remove("active");
+      collect();
+    });
+
+    upgradeBtn.addEventListener("click", () => {
+      const cost = 500000;
+      if (score >= cost) {
+        score -= cost;
+        maxGarage += 5;
+        save();
+        render();
+      }
+    });
+
+    // Секретный вход в админку (3 клика по меню)
+    let menuClicks = 0;
+    let menuClickTimer;
+    menuBtn.addEventListener("click", () => {
+      menuClicks++;
+      if (menuClicks === 3) {
+        document.getElementById("adminModal").classList.add("active");
+        menuClicks = 0;
+      }
+      clearTimeout(menuClickTimer);
+      menuClickTimer = setTimeout(() => { menuClicks = 0; }, 1000);
+      
+      // Обычное открытие меню
+      modal.classList.add("active");
+    });
+
+    closeModal.addEventListener("click", () => modal.classList.remove("active"));
+    modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("active"); });
+
+    // Админ логика
+    window.checkAdmin = function() {
+      const pass = document.getElementById("adminPass").value;
+      if (pass === "12345678") {
+        document.getElementById("adminAuth").style.display = "none";
+        document.getElementById("adminPanel").style.display = "block";
+      } else {
+        alert("Неверный пароль!");
+      }
+    };
+
+    window.giveMoney = function() {
+      score += 10000000;
+      save();
+      render();
+      alert("10 000 000 ₽ зачислено!");
+    };
+
+    window.giveLevel = function() {
+      level++;
+      save();
+      render();
+      alert("Уровень повышен!");
+    };
+
+    window.giveSafe = function() {
+      safe.push({ text: "А001АА", rarity: "mythic", price: 50000000 });
+      save();
+      render();
+      alert("Мифический номер добавлен в сейф!");
+    };
+
+    render();
+  </script>
+</body>
+</html>
